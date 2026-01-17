@@ -15,12 +15,17 @@ converse("Tell me more about that")
 
 ### Speak without waiting for response
 ```python
-converse("Goodbye!", wait_for_response=False)
+converse("Goodbye!", listen=False)
+```
+
+### Listen only (no speech)
+```python
+converse("", listen=True, options={"skip_tts": True})
 ```
 
 ### User requests specific voice
 ```python
-converse("Hello", voice="nova")
+converse("Hello", options={"voice": "nova"})
 ```
 Only specify voice when explicitly requested by user.
 
@@ -28,7 +33,7 @@ Only specify voice when explicitly requested by user.
 
 ### Quick confirmation (no response needed)
 ```python
-converse("Done! The file is saved", wait_for_response=False)
+converse("Done! The file is saved", listen=False)
 ```
 
 ### Ask a question (wait for answer)
@@ -38,12 +43,12 @@ converse("Which file should I open?")
 
 ### Status update during work
 ```python
-converse("Searching for that file now", wait_for_response=False)
+converse("Searching for that file now", listen=False)
 # Then immediately run grep/search tools
 ```
 
 ## Privacy Note
-Microphone access required when `wait_for_response=True`. Audio processed via STT service, not stored.
+Microphone access required when `listen=True`. Audio processed via STT service, not stored.
 
 ## See Also
 - `voicemode-parameters` - Full parameter reference

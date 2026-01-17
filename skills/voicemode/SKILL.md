@@ -40,7 +40,10 @@ Use the `converse` MCP tool to speak to users and hear their responses:
 voicemode:converse("Hello! What would you like to work on?")
 
 # Speak without waiting (for narration while working)
-voicemode:converse("Searching the codebase now...", wait_for_response=False)
+voicemode:converse("Searching the codebase now...", listen=False)
+
+# Listen only (no speech)
+voicemode:converse("", listen=True, options={"skip_tts": True})
 ```
 
 For most conversations, just pass your message - defaults handle everything else.
@@ -48,14 +51,14 @@ For most conversations, just pass your message - defaults handle everything else
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `message` | required | Text to speak |
-| `wait_for_response` | true | Listen after speaking |
-| `voice` | auto | TTS voice |
+| `listen` | true | Listen after speaking |
+| `options` | {} | Additional options (voice, speed, skip_tts, etc.) |
 
 For all parameters, see [Converse Parameters](../../docs/reference/converse-parameters.md).
 
 ## Best Practices
 
-1. **Narrate without waiting** - Use `wait_for_response=False` when announcing actions
+1. **Narrate without waiting** - Use `listen=False` when announcing actions
 2. **One question at a time** - Don't bundle multiple questions in voice mode
 3. **Check status first** - Verify services are running before starting conversations
 4. **Let VoiceMode auto-select** - Don't hardcode providers unless user has preference
