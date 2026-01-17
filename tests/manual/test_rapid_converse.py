@@ -30,14 +30,14 @@ class MCPTestClient:
         print(json.dumps(request))
         sys.stdout.flush()
     
-    async def call_converse(self, message: str, wait_for_response: bool = True, duration: float = 20.0):
+    async def call_converse(self, message: str, listen: bool = True, duration: float = 20.0):
         """Call the converse tool"""
         await self.send_request("tools/call", {
             "name": "converse",
             "arguments": {
                 "message": message,
-                "wait_for_response": wait_for_response,
-                "listen_duration_max": duration
+                "listen": listen,
+                "options": {"listen_duration_max": duration}
             }
         })
 
@@ -50,23 +50,23 @@ async def test_rapid_calls():
     
     # Scenario 1: Call while previous is still processing
     print("\nScenario 1: Overlapping calls", file=sys.stderr)
-    await client.call_converse("First message", wait_for_response=True, duration=20.0)
+    await client.call_converse("First message", listen=True, duration=20.0)
     await asyncio.sleep(0.5)  # Short delay while first is still processing
-    await client.call_converse("Second message", wait_for_response=False)
+    await client.call_converse("Second message", listen=False)
     
     # Scenario 2: Very rapid successive calls
     print("\nScenario 2: Rapid successive calls", file=sys.stderr)
     await asyncio.sleep(25)  # Wait for first to complete
     for i in range(3):
-        await client.call_converse(f"Rapid message {i}", wait_for_response=False)
+        await client.call_converse(f"Rapid message {i}", listen=False)
         await asyncio.sleep(0.1)  # Very short delay
     
     # Scenario 3: Mixed wait/no-wait calls
     print("\nScenario 3: Mixed wait/no-wait calls", file=sys.stderr)
     await asyncio.sleep(5)
-    await client.call_converse("Listen for response", wait_for_response=True, duration=10.0)
+    await client.call_converse("Listen for response", listen=True, duration=10.0)
     await asyncio.sleep(2)  # Interrupt during listening
-    await client.call_converse("Interrupt message", wait_for_response=False)
+    await client.call_converse("Interrupt message", listen=False)
     
     print("\nTest completed", file=sys.stderr)
 

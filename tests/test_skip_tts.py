@@ -42,8 +42,8 @@ class TestSkipTTS:
                     "converse",
                     {
                         "message": "Test message",
-                        "skip_tts": True,
-                        "wait_for_response": False
+                        "listen": False,
+                        "options": {"skip_tts": True}
                     }
                 )
                 # Should not call TTS when skip_tts=True
@@ -63,8 +63,8 @@ class TestSkipTTS:
                     "converse",
                     {
                         "message": "Test message",
-                        "skip_tts": False,
-                        "wait_for_response": False
+                        "listen": False,
+                        "options": {"skip_tts": False}
                     }
                 )
                 # Should call TTS when skip_tts=False
@@ -85,7 +85,7 @@ class TestSkipTTS:
                     "converse",
                     {
                         "message": "Test message",
-                        "wait_for_response": False
+                        "listen": False
                         # skip_tts not specified, should use environment variable
                     }
                 )
@@ -107,7 +107,7 @@ class TestSkipTTS:
                     "converse",
                     {
                         "message": "Test message",
-                        "wait_for_response": False
+                        "listen": False
                         # skip_tts not specified, should use environment variable
                     }
                 )

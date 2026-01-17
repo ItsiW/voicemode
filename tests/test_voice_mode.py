@@ -126,7 +126,7 @@ class TestVoiceMCPTools:
     async def test_speak_text(self, voice_mode_server):
         """Test text-to-speech functionality"""
         async with Client(voice_mode_server) as client:
-            result = await client.call_tool("converse", {"message": "Hello, world!", "wait_for_response": False})
+            result = await client.call_tool("converse", {"message": "Hello, world!", "listen": False})
             assert "successfully" in result[0].text.lower()
     
     @pytest.mark.asyncio
@@ -172,7 +172,7 @@ class TestErrorHandling:
         mock_openai_clients['tts'].audio.speech.create.side_effect = Exception("API Error")
         
         async with Client(voice_mode_server) as client:
-            result = await client.call_tool("converse", {"message": "Test", "wait_for_response": False})
+            result = await client.call_tool("converse", {"message": "Test", "listen": False})
             assert "Error" in result[0].text
     
     @pytest.mark.asyncio
@@ -316,7 +316,7 @@ class TestAudioProcessing:
         """Test handling of different audio formats"""
         # Test MP3 format (default)
         async with Client(voice_mode_server) as client:
-            result = await client.call_tool("converse", {"message": "Test MP3", "wait_for_response": False})
+            result = await client.call_tool("converse", {"message": "Test MP3", "listen": False})
             assert "successfully" in result[0].text.lower()
         
         # Verify MP3 was used
@@ -385,7 +385,7 @@ class TestDebugFeatures:
             with patch.object(voice_module, 'DEBUG_DIR', debug_dir), \
                  patch.object(voice_module, 'DEBUG', True):
                 async with Client(voice_mode_server) as client:
-                    await client.call_tool("converse", {"message": "Debug test", "wait_for_response": False})
+                    await client.call_tool("converse", {"message": "Debug test", "listen": False})
                     
                     # Check if debug files were created
                     debug_files = list(debug_dir.glob("*-tts-output.*"))
@@ -412,7 +412,7 @@ async def test_full_conversation_flow(voice_mode_server):
         # Step 2: Speak a response
         result2 = await client.call_tool(
             "converse",
-            {"message": "That's an interesting choice!", "wait_for_response": False}
+            {"message": "That's an interesting choice!", "listen": False}
         )
         assert "successfully" in result2[0].text.lower()
         

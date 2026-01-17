@@ -29,7 +29,7 @@ class TestConverseOpenAIErrors:
                 with patch('voice_mode.config.OPENAI_API_KEY', 'test-api-key'):
                     result = await converse.fn(
                         message="Test message",
-                        wait_for_response=False
+                        listen=False
                     )
 
                 # User should see a clear message about quota/credit issue
@@ -54,7 +54,7 @@ class TestConverseOpenAIErrors:
                 with patch('voice_mode.config.OPENAI_API_KEY', 'invalid-key'):
                     result = await converse.fn(
                         message="Test message",
-                        wait_for_response=False
+                        listen=False
                     )
 
                     # User should see a message about API key issue
@@ -78,7 +78,7 @@ class TestConverseOpenAIErrors:
             with patch('voice_mode.config.TTS_BASE_URLS', ['https://api.openai.com/v1']):
                 result = await converse.fn(
                     message="Test message",
-                    wait_for_response=False
+                    listen=False
                 )
 
                 # User should see a message about rate limiting
@@ -113,7 +113,7 @@ class TestConverseFailoverBehavior:
             with patch('voice_mode.config.TTS_BASE_URLS', test_urls):
                 result = await converse.fn(
                     message="Test message",
-                    wait_for_response=False
+                    listen=False
                 )
 
                 # Should have tried both endpoints (check from error config)
@@ -132,7 +132,7 @@ class TestConverseFailoverBehavior:
 
             result = await converse.fn(
                 message="Test message",
-                wait_for_response=False
+                listen=False
             )
 
             # Should succeed without error
@@ -160,7 +160,7 @@ class TestConverseErrorMessages:
             with patch('voice_mode.config.OPENAI_API_KEY', None):
                 result = await converse.fn(
                     message="Test",
-                    wait_for_response=False
+                    listen=False
                 )
 
                 # Should suggest checking services or setting API key
@@ -187,7 +187,7 @@ class TestConverseErrorMessages:
 
             result = await converse.fn(
                 message="Test",
-                wait_for_response=False
+                listen=False
             )
 
             # Should mention the provider that failed
@@ -225,7 +225,7 @@ class TestConverseSTTFailures:
 
                     result = await converse.fn(
                         message="Test",
-                        wait_for_response=True
+                        listen=True
                     )
 
                     # Should indicate STT/transcription failure
@@ -254,7 +254,7 @@ class TestConverseSTTFailures:
 
                     result = await converse.fn(
                         message="Are you there?",
-                        wait_for_response=True
+                        listen=True
                     )
 
                     # Should indicate no speech detected
@@ -277,7 +277,7 @@ class TestConverseMetrics:
 
             result = await converse.fn(
                 message="Test",
-                wait_for_response=False
+                listen=False
             )
 
             # Timing info should be included in successful responses (check for 's' suffix for seconds)

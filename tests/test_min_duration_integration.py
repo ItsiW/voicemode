@@ -31,8 +31,8 @@ class TestMinDurationIntegration:
             # Test negative listen_duration_min
             result = await converse_func(
                 message="Test",
-                wait_for_response=True,
-                listen_duration_min=-1.0
+                listen=True,
+                options={'listen_duration_min': -1.0}
             )
             assert "listen_duration_min cannot be negative" in result
             
@@ -47,9 +47,8 @@ class TestMinDurationIntegration:
                             
                             result = await converse_func(
                                 message="Test",
-                                wait_for_response=True,
-                                listen_duration_max=5.0,
-                                listen_duration_min=10.0
+                                listen=True,
+                                options={'listen_duration_max': 5.0, 'listen_duration_min': 10.0}
                             )
                             
                             # Should log warning and adjust listen_duration_min
@@ -81,9 +80,8 @@ class TestMinDurationIntegration:
                         # Test with specific listen_duration_min
                         result = await converse_func(
                             message="Test question",
-                            wait_for_response=True,
-                            listen_duration_max=30.0,
-                            listen_duration_min=2.5
+                            listen=True,
+                            options={'listen_duration_max': 30.0, 'listen_duration_min': 2.5}
                         )
                         
                         # Verify record_audio_with_silence_detection was called with correct parameters
